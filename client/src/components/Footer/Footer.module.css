@@ -1,0 +1,11 @@
+
+.text{
+    color : #999999;
+    font-family:fantasy;
+}
+
+.footer{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}

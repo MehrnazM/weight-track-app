@@ -1,0 +1,132 @@
+.card{
+    box-shadow: 10px 10px 30px -10px grey;
+}
+
+.cardTitle{
+    margin-top: -25px;
+    font-family:'Balsamiq Sans';
+}
+
+.cardTitle > p{
+    margin-top: -10px;
+}
+
+.cardText{
+    margin-left: 4px;
+    font-family: 'Kalam';
+    font-size: large;
+    font-weight: 400;
+}
+/* balsamiq-sans-regular - latin */
+@font-face {
+    font-family: Balsamiq Sans;
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/balsamiq-sans-v2-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('../fonts/balsamiq-sans-v2-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/balsamiq-sans-v2-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/balsamiq-sans-v2-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/balsamiq-sans-v2-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/balsamiq-sans-v2-latin-regular.svg#BalsamiqSans') format('svg'); /* Legacy iOS */
+  }
+  
+  /* kalam-regular - latin */
+  @font-face {
+    font-family: Kalam;
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/kalam-v11-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('../fonts/kalam-v11-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/kalam-v11-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/kalam-v11-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/kalam-v11-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/kalam-v11-latin-regular.svg#Kalam') format('svg'); /* Legacy iOS */
+  }
+
+  .btn {
+      margin-left: 5em;
+      font-size: 15px;
+      border: 1px;
+      border-style: hidden;
+      border-radius: 4px;
+  }
+
+  .grid{
+      display: grid;
+      grid-template-columns: 100px 420px 400px 800px;
+      grid-template-rows: 40px 200px 650px;
+      background-color: white;
+      justify-content: center;
+  }
+
+  .gridCard{
+      grid-column-start: 2;
+      grid-column-end: 3;
+      grid-row-start: 2;
+      grid-row-end: 4;
+  }
+  .gridChart{
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 3;
+    grid-row-end: 4;
+}
+.gridChoice{
+    grid-column-start: 3;
+    grid-column-start: 4;
+    grid-row-start: 1;
+    grid-row-start: 2;
+    align-items: center;
+    margin-left: 15%;
+    margin-top: 10%;
+}
+.chart{
+    height: 650px;
+    width: 800px;
+}
+
+.edit{
+    margin-top: 10%;
+    display: grid;
+    grid-template-columns: auto 25px auto;
+}
+.editGridLeft{
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.editGridRight{
+    grid-column-start: 3;
+    grid-column-end: 4;
+    margin-top: 2px;
+}
+.editGridRight > input{
+    height : 25px;
+    margin-bottom:5pt;
+}
+.editButton{
+    margin-top:10%;
+    margin-left: 30%;
+}
+.editButton > input{
+    margin-right: 5%;
+    background-color: #343a40;
+    color: whitesmoke;
+    border-radius: 4px;
+}
+.editButton > input:hover {
+    background-color: whitesmoke;
+    color: #343a40;
+}
+
+.editButton > button{
+    border-radius: 4px;
+    background-color: #343a40;
+    color: whitesmoke;
+}
+
+.editButton > button:hover {
+    background-color: whitesmoke;
+    color: #343a40;
+}

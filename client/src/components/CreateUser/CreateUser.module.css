@@ -1,0 +1,78 @@
+
+.gridDisplayFP{
+    display: grid;
+    grid-template-columns: auto 40px auto;   
+    margin-top: 10%;
+}
+.leftGridFP{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    font-family: 'Comic-sans';
+    font-size: large;
+}
+
+.leftGridFP > p{
+    margin-bottom: 30%;
+}
+
+.rightGridFP{
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+
+.rightGridFP > input{
+    height: 25px;
+    margin-bottom: 11%;
+    border-radius: 4px;
+    border-style:none;
+}
+
+.gridDisplaySP{
+    display: grid;
+    grid-template-columns: auto 35px auto; 
+    margin-top: 5%;
+}
+
+
+.leftGridSP{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    font-family: 'Comic-sans';
+    font-size: large;
+}
+.rightGridSP{
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+.rightGridSP > input{
+    height: 25px;
+    margin-bottom: 18px;
+    border-radius: 4px;
+    border-style:none;
+}
+.btn{
+    border-radius: 5px;
+    border-style: none;
+    background-color: #343a40;
+    color: #cccccc;
+    width: fit-content;
+    padding-inline-start: 10px;
+    padding-inline-end: 10px;
+    writing-mode: horizontal-tb;
+}
+.btn:hover{
+    background-color: #cccccc;
+    color: #343a40;
+}
+
+.nextbtn{
+    margin-top: 10%;
+    margin-left:2vw;
+}
+
+.submitbtn{
+    margin-top: 10%;
+    margin-left: -15%;
+    margin-right: 33%;
+
+}

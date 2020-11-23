@@ -1,0 +1,58 @@
+.box {
+    
+    margin-left: 37%;
+    margin-top: 5%;
+    padding: 10px 15px 10px 15px;
+    height: 450px;
+    border-style: groove;
+    border-width: 3px;
+    border-color: #e6e6e6;
+    border-radius: 20%;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#d7dee3+59,f6f8f9+93 */
+    background: rgb(215,222,227); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(215,222,227,1) 59%, rgba(246,248,249,1) 93%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(215,222,227,1) 59%,rgba(246,248,249,1) 93%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(215,222,227,1) 59%,rgba(246,248,249,1) 93%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d7dee3', endColorstr='#f6f8f9',GradientType=0 ); /* IE6-9 */
+}
+
+.welcome {
+
+    margin-top: 10%;
+    text-shadow: 3px 3px 6px #b3b3b3;
+    color: #404040;
+    font-style: oblique;
+    text-transform: uppercase;
+    font-size: x-large;
+    font-family: 'Comic-sans';
+    font-weight: bold;
+
+}
+
+.button{
+    display: inline-block;
+    padding: 10px 15px 10px 15px;
+    margin: 10px 0.3em 0.3em 0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: 'Roboto',sans-serif;
+    font-weight: 300;
+    color: #d9d9d9;
+    background-color: #404040;
+    text-align:center;
+    width: 2.5in;
+}
+.button:hover{
+    background-color:#d9d9d9;
+    color: #404040;
+}
+@media all and (max-width:30em){
+    button{
+        display: block;
+        margin: 0.2em auto;
+    }
+}
