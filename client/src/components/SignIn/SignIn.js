@@ -1,10 +1,11 @@
 import { React, Component } from "react"
-import userData from "../userData"
+//import userData from "../userData"
 import loginStyle from "../Login/Login.module.css"
 import styles from "./SignIn.module.css"
 import { withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser,faKey } from "@fortawesome/free-solid-svg-icons";
+import {getUserByUserPass} from "../HandleAPI"
 
 class SignIn extends Component{
     
@@ -14,7 +15,7 @@ class SignIn extends Component{
             username : "",
             password : "",
             authorize : true,
-            data : userData
+            data : {}
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -31,49 +32,56 @@ class SignIn extends Component{
         })
     }
     
-    handleSubmit(e){
-        
-        const userArr = this.state.data.filter(item => item.username === this.state.username)
-        if(userArr !== null){
-            for(let i = 0; i < userArr.length; i++){
-                const user = userArr[i]
-                if(user.password === this.state.password){
-                    this.setState({authorize : true})
-                    const id = user.id
-                    const path = `/user/${id}/${this.state.username}/`
-                    this.props.history.push(path)
-                    this.props.history.go(0)
-                    return
-                }
+    async handleSubmit(e){
+        e.preventDefault()
+       const user = await getUserByUserPass(this.state.username,this.state.password)
+       .then(data => {
+           console.log(data)
+            if(data !== null){
+                this.setState({authorize : true})
+                const id = data.id
+                const path = `/user/${id}/${this.state.username}/`
+                this.props.history.push(path)
+                this.props.history.go(0)
+                return
             }
-        }
+        })
+        .catch(e => console.log(e))
+        
         this.setState({
             username : "",
             password : "",
             authorize : false
         })
         
-        e.preventDefault()
+       
     }
 
     render(){
         const condStyle = (this.state.authorize === false)?{marginLeft : "15px"}:{marginLeft: "0"}
         return(
             <div className={`col-md-3 ${loginStyle.box}`}>
-                    <form style={condStyle} className={styles.formStyle} onSubmit={(e) => this.handleSubmit(e)}>
+                    <form style={condStyle} className={styles.formStyle} onSubmit={e => this.handleSubmit(e)}>
                     <span>Username:</span>
                         <div style={{position: "relative"}}>
-                            <span><FontAwesomeIcon style={{position:"absolute",top:"25%"}} icon={faUser} size="md" color="#343a40" fixedWidth /></span>
-                            <input style={{paddingLeft:"20px"}}type="text" name="username" value={this.state.username} required onChange={(e) => this.handleChange(e.target)}/>
+                            <span><FontAwesomeIcon style={{position:"absolute",top:"25%"}} icon={faUser} size="sm" 
+                                                   color="#343a40" fixedWidth /></span>
+                            <input style={{paddingLeft:"20px"}}type="text" name="username" 
+                                   value={this.state.username} required 
+                                   onChange={(e) => this.handleChange(e.target)}/>
                         </div>
                         <br/>
                         <span>Password:</span>
                         <div style={{position: "relative"}}>
-                            <span><FontAwesomeIcon style={{position:"absolute",top:"25%"}} icon={faKey} size="md" color="#343a40" fixedWidth /></span>
-                            <input style={{paddingLeft:"20px"}} type="password" name="password" value={this.state.password} required onChange={(e) => this.handleChange(e.target)}/>
+                            <span><FontAwesomeIcon style={{position:"absolute",top:"25%"}} icon={faKey} size="sm" 
+                                                    color="#343a40" fixedWidth /></span>
+                            <input style={{paddingLeft:"20px"}} type="password" name="password" 
+                                    value={this.state.password} required 
+                                    onChange={(e) => this.handleChange(e.target)}/>
                         </div>
                         <br/>
-                        {(!this.state.authorize)&&<span className={styles.error}>*Please enter a valid username and password.</span>}
+                        {(!this.state.authorize)&&<span className={styles.error}>
+                                                        *Please enter a valid username and password.</span>}
                         <br/>
                         <input className={styles.btn} type="submit" value="Sign in"/>
                     </form>

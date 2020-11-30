@@ -4,10 +4,17 @@ import styles from "./ShowUser.module.css"
 import { useHistory } from "react-router-dom"
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import { deleteUser } from "../HandleAPI"
+import { PrintInformation } from "../Information"
+import Age from "./calcAge"
 
 function CardComponent(props){
 
-    const { url, information, username, age} = props
+    
+    const { url,user } = props
+    const age = Age(new Date(user.birthdate))
+    const { id,username } = user
+    const information = PrintInformation(user)
     const history = useHistory()
 
     function handleClick(target){
@@ -24,7 +31,11 @@ function CardComponent(props){
                 buttons: [
                   {
                     label: 'Yes',
-                    onClick: () => alert('Click Yes')
+                    onClick: () => {
+                                    deleteUser(id)
+                                    history.push("/")
+                                    history.go(0)
+                                }
                   },
                   {
                     label: 'No'

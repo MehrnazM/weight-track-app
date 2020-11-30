@@ -40,13 +40,24 @@
     font-family: 'Comic-sans';
     font-size: large;
 }
+.leftGridSP > p{
+    margin-top: -1pt;
+}
 .rightGridSP{
     grid-column-start: 3;
     grid-column-end: 4;
 }
+.rightGridSP > input,select{
+    
+    border-radius: 4px;
+    border-style:none;
+}
 .rightGridSP > input{
-    height: 25px;
-    margin-bottom: 18px;
+    margin-top: 14px;
+    height: 28px;
+}
+.datePicker{
+    margin-top: 15px;
     border-radius: 4px;
     border-style:none;
 }
@@ -74,5 +85,4 @@
     margin-top: 10%;
     margin-left: -15%;
     margin-right: 33%;
-
 }

@@ -1,13 +1,12 @@
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 import { withRouter } from "react-router-dom";
-import userData from "../userData"
 import CardComponent from "./CardComponent"
 import ChartComponent from "./ChartComponent"
 import styles from "./ShowUser.module.css"
-import { PrintInformation , ChartProp} from "../Information"
-
+import { getUserById } from "../HandleAPI"
 
 class ShowUser extends Component{
+    _isMounted = false;
 
     constructor(props){
         
@@ -16,14 +15,15 @@ class ShowUser extends Component{
             id: this.props.match.params.id,
             username: this.props.match.params.username,
             chart: "",
-            show: false
+            user : {},
+            url : "",
+            show: false,
+            fetched : false
         }
         this.handleChange = this.handleChange.bind(this)
     }
     handleChange(event){
-        console.log(event.target)
         const { value } = event.target
-        console.log(value)
         if(value !== ""){
             this.setState({
                 chart: value,
@@ -31,38 +31,70 @@ class ShowUser extends Component{
             })
         }
     }
-    render(){
-        
-        // eslint-disable-next-line
-        const user = userData.find(item => item.username === this.state.username && item.id == this.state.id)
-        const information = PrintInformation(user)
-        const url = (user.gender === "female")?"https://freeiconshop.com/wp-content/uploads/edd/person-girl-flat.png":
-                                           "https://i.pinimgcom/originals/7c/c7/a6/7cc7a630624d20f7797cb4c8e93c09c1.png"
-        const chartProp = ChartProp(user)
-        const options = chartProp.map(item => {
-            return(
-                <option key={item} value={item}>{item}</option>
-            )
+    async componentDidMount(){
+        this._isMounted = true;
+        const newUser = await getUserById(this.state.id)
+        .then(response => {if(this._isMounted){
+            this.setState(prevState => {
+                return{
+                ...prevState,
+                user : response
+                }
+            })
+        }})
+        .catch(e => console.log(e))
+        console.log(this.state.user)
+        const picUrl = await (this.state.user.gender === "female")? 
+                        "https://freeiconshop.com/wp-content/uploads/edd/person-girl-flat.png":
+                        "https://i.pinimgcom/originals/7c/c7/a6/7cc7a630624d20f7797cb4c8e93c09c1.png"
+        this.setState(prevState => {
+            return{
+                ...prevState,
+                url : picUrl
+            }
         })
+        this.setState(prevState => {
+            return{
+                ...prevState,
+                fetched : true
+            }
+        })
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
+      }
+    render(){
         return(
-            <div className={styles.grid}>
-                <div className={styles.gridCard}>
-                    <CardComponent information={information} url={url} age={user.age} username={this.state.username}/>
-                </div>
-                <div className={styles.gridChoice}>
-                    <form>
-                        <select  value={this.state.chart} style={{padding: "2px 2px 2px 2px"}} name="chartChoice" onChange={this.handleChange}>
-                            <option value="">--Please choose an attribute to see the progress chart</option>
-                            {options}
-                        </select>
-                    </form>             
-                </div>
-                <div className={styles.gridChart}>
-                    {(this.state.show)&&
-                        <ChartComponent xAxis={user.date} data={user[this.state.chart]} chartLabel={this.state.chart}
-                                        color={`rgba(77,77,255,1)`} title={`Changes of your ${this.state.chart}`} />}
-                </div>
-            </div>
+            <Fragment>
+                {this.state.fetched&&<div className={styles.grid}>
+                    <div className={styles.gridCard}>
+                        <CardComponent url={this.state.url} user={this.state.user}/>
+                    </div>
+                    <div className={styles.gridChoice}>
+                        <form>
+                            <select  value={this.state.chart} 
+                                    style={{padding: "2px 2px 2px 2px"}} 
+                                    name="chartChoice" 
+                                    onChange={this.handleChange}>
+                                <option value="">--Please choose an attribute to see the progress chart</option>
+                                <option value="weight">Weight</option>
+                                <option value="weight">Weight</option>
+                                <option value="chest">Chest</option>
+                                <option value="upperarm">Upper arm</option>
+                                <option value="thighs">Thighs</option>
+                            </select>
+                        </form>             
+                    </div>
+                    <div className={styles.gridChart}>
+                        {(this.state.show)&&
+                            <ChartComponent xAxis={this.state.user.date} 
+                                            data={this.state.user[this.state.chart]} 
+                                            chartLabel={this.state.chart}
+                                            color={`rgba(77,77,255,1)`} 
+                                            title={`Changes of your ${this.state.chart}`} />}
+                    </div>
+                </div>}
+            </Fragment>
         )
     }
 }

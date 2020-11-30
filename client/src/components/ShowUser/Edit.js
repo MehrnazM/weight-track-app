@@ -2,6 +2,7 @@ import React from "react"
 import loginStyles from "../Login/Login.module.css"
 import { withRouter } from "react-router-dom";
 import styles from "./ShowUser.module.css"
+import { getUserById, updateUser} from "../HandleAPI"
 
 class Edit extends React.Component{
 
@@ -16,7 +17,7 @@ class Edit extends React.Component{
             hips: 0,
             chest: 0,
             thighs: 0,
-            upperArms: 0,
+            upperarms: 0,
             waist: 0,
             date: ""
         }
@@ -33,15 +34,35 @@ class Edit extends React.Component{
     }
 
     handleClick(event){
-        
+
+        event.preventDefault()
         const {value} = event.target
-        if(value === "Cancel"){
-            this.props.history.push(`/user/${this.state.id}/${this.state.username}/`)
-            this.props.history.go(0)
+        if(value === "Save"){
+            const user = getUserById(this.state.id)
+            const today = new Date().toDateString().slice(4)
+            this.setState(prevState => {
+                return{
+                    ...prevState,
+                    date : today
+                }
+            })
+            const attributes = Object.getOwnPropertyNames(this.state)
+            attributes.slice(2).forEach(item => {
+                if(this.state[item] === 0){
+                    const lastVal = user[item][user[item].length-1]
+                    this.setState(prevState => {
+                        return{
+                            ...prevState,
+                            [item] : lastVal
+                        }
+                    })
+                }
+                user[item].push(this.state[item])
+            })
+            updateUser(user)
         }
-        else{
-            event.preventDefault()
-        }
+        this.props.history.push(`/user/${this.state.id}/${this.state.username}/`)
+        this.props.history.go(0)
     }
 
     render(){
@@ -63,23 +84,23 @@ class Edit extends React.Component{
                             <br/>
                             <label for="thighs">Thighs: </label>
                             <br/>
-                            <label for="upperArms">Upper arms: </label>
+                            <label for="upperarms">Upper arms: </label>
                             <br/>
                         </div>
                         <div className={styles.editGridRight}>
-                            <input type="text" name="weight" value={(this.state.weight !== 0)?this.state.weight:""} onChange={this.handleChange}/>
+                            <input type="number" name="weight" value={(this.state.weight !== 0)?this.state.weight:""} onChange={this.handleChange}/>
                             <br/>
-                            <input type="text" name="height" value={(this.state.height !== 0)?this.state.height:""} onChange={this.handleChange}/>
+                            <input type="number" name="height" value={(this.state.height !== 0)?this.state.height:""} onChange={this.handleChange}/>
                             <br/>
-                            <input type="text" name="waist" value={(this.state.waist !== 0)?this.state.waist:""} onChange={this.handleChange}/>
+                            <input type="number" name="waist" value={(this.state.waist !== 0)?this.state.waist:""} onChange={this.handleChange}/>
                             <br/>
-                            <input type="text" name="hips" value={(this.state.hips !== 0)?this.state.hips:""} onChange={this.handleChange}/>
+                            <input type="number" name="hips" value={(this.state.hips !== 0)?this.state.hips:""} onChange={this.handleChange}/>
                             <br/>
-                            <input type="text" name="chest" value={(this.state.chest !== 0)?this.state.chest:""} onChange={this.handleChange}/>
+                            <input type="number" name="chest" value={(this.state.chest !== 0)?this.state.chest:""} onChange={this.handleChange}/>
                             <br/>
-                            <input type="text" name="thighs" value={(this.state.thighs !== 0)?this.state.thighs:""} onChange={this.handleChange}/>
+                            <input type="number" name="thighs" value={(this.state.thighs !== 0)?this.state.thighs:""} onChange={this.handleChange}/>
                             <br/>
-                            <input type="text" name="upperArms" value={(this.state.upperArms !== 0)?this.state.upperArms:""} onChange={this.handleChange}/>
+                            <input type="number" name="upperarms" value={(this.state.upperarms !== 0)?this.state.upperarms:""} onChange={this.handleChange}/>
                             <br/>
                         </div>
                         </div>

@@ -5,8 +5,15 @@ import styles from "./ShowUser.module.css"
 function ChartComponent(props){
 
     const { xAxis, data, chartLabel, color, title } = props
+    const length = xAxis.length
+    var shownxAxis = xAxis
+    var shownData = data
+    if(length > 12){
+        shownxAxis = xAxis.slice(length-12)
+        shownData = data.slice(length-12)
+    }
     const state ={
-        labels: xAxis,
+        labels: shownxAxis,
         datasets: [
             {
                 label: chartLabel,
@@ -15,7 +22,7 @@ function ChartComponent(props){
                 backgroundColor: color,
                 borderColor: color,
                 borderWidth: 2,
-                data: data
+                data: shownData
             }
         ]
     }

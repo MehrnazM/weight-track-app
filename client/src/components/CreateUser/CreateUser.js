@@ -2,36 +2,69 @@ import React, { useState } from "react"
 import { useHistory } from 'react-router-dom'
 import loginStyle from "../Login/Login.module.css"
 import styles from "./CreateUser.module.css"
+import DatePicker from "react-datepicker";
+import { postUser } from "../HandleAPI"
+import "react-datepicker/dist/react-datepicker.css";
 
 function CreateUser(){
 
     const [user,setUser] = useState({
         username : "",
-        age : 0,
+        birthDate : new Date().toDateString().slice(4),
         email: "",
         password: "",
-        weight : 0,
+        gender: "female",
+        weight : [0],
         height : 0,
-        waist: 0,
-        hips: 0,
-        chest: 0,
-        thighs: 0,
-        upperArm: 0
+        waist: [0],
+        hips: [0],
+        chest: [0],
+        thighs: [0],
+        upperarm: [0]
     })
     const [page,setPage] = useState(true)
     const history = useHistory()
     function handleChange(e){
-        const { name, value } = e.target
-        setUser(prevUser => (
-                {
-                    ...prevUser,
-                    [name] : value
-                }))}
-    function handleSubmit(e){
-        console.log(user)
-        e.preventDefault()
+        const { name, value, type } = e.target
+        if(type === "number"){
+            if(name === "height"){
+                setUser(prevUser => (
+                    {
+                        ...prevUser,
+                        [name] : parseFloat(value)
+                    }))
+                }
+            else{
+                const numValue = parseFloat(value)
+                const list = [numValue]
+                setUser(prevUser => (
+                            {
+                                ...prevUser,
+                                [name] : list
+                            }
+                        ))
+            }
+        }
+        
+        else{
+            setUser(prevUser => (
+                    {
+                        ...prevUser,
+                        [name] : value
+                    }))
+        }
     }
-    const persInfo = <form onSubmit={(e) => {e.preventDefault();setPage(!page);}}>
+    function handleSubmit(e){
+        e.preventDefault()
+        const data = postUser(user)
+        data.then(res => {
+            const path = `/user/${res.id}/${user.username}/`
+            history.push(path)
+            history.go(0)
+        })
+        .catch(e => console.log(e))
+    }
+    const persInfo = <form>
                         <div className={styles.gridDisplayFP}>
                             <div className={styles.leftGridFP}>
                                 <p >Name:</p> 
@@ -41,18 +74,19 @@ function CreateUser(){
                             <div className={styles.rightGridFP}>  
                                 <input type="text" name="username" value={user.username} required onChange={(e) => handleChange(e)} />
                                 <br/>
-                                <input type="text" name="email" value={user.email} required onChange={(e) => handleChange(e)} />
+                                <input type="email" name="email" value={user.email} required onChange={(e) => handleChange(e)} />
                                 <br/>
                                 <input type="password" name="password" value={user.password} required onChange={(e) => handleChange(e)} />
                                 <br/>
-                                <input className={`${styles.nextbtn} ${styles.btn}`} type="submit" value="Next"/>
+                                <button className={`${styles.nextbtn} ${styles.btn}`} onClick={() => setPage(!page)}>Next</button>
                             </div>
                         </div>
                     </form>
     const measurments = <form onSubmit={e => handleSubmit(e)} >
                             <div className={styles.gridDisplaySP}>
                                 <div className={styles.leftGridSP}>
-                                    <p>Age: </p>
+                                    <p>Gender:</p>
+                                    <p>Birth date: </p>
                                     <p>Height: </p>
                                     <p>Weight: </p>
                                     <p>Chest: </p>
@@ -62,23 +96,44 @@ function CreateUser(){
                                     <p>Upper arm: </p>
                                 </div>
                                 <div className={styles.rightGridSP} >
-                                    <input type="number" name="age" value={(user.age !== 0)?user.age:""} onChange={e => handleChange(e)} required/>
+                                    <select name="gender" value={user.gender} onChange={e => handleChange(e)}>
+                                        <option value="female">Female</option>
+                                        <option value="male">Male</option>
+                                    </select>
                                     <br/>
-                                    <input type="number" name="height" value={(user.height !== 0)?user.height:""} onChange={e => handleChange(e)} required/>
+                                    <DatePicker
+                                        className={styles.datePicker}
+                                        selected={new Date(user.birthDate)}
+                                        onChange={date => {
+                                            const birth = date.toDateString().slice(4)
+                                            console.log(birth)
+                                            setUser(prevUser => (
+                                            {
+                                                ...prevUser,
+                                                birthDate : birth
+                                            }))}}
+                                        peekNextMonth
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        dropdownMode="select"
+                                        />
                                     <br/>
-                                    <input type="number" name="weight" value={(user.weight !== 0)?user.weight:""} onChange={e => handleChange(e)} required/>
+                                    <input type="number" name="height" value={(user.height === 0)?"":user.height} onChange={e => handleChange(e)} required/>
                                     <br/>
-                                    <input type="number" name="chest" value={(user.chest !== 0)?user.chest:""} onChange={e => handleChange(e)} required/>
+                                    <input type="number" name="weight" value={(user.weight[0] === 0)?"":user.weight[0]} onChange={e => handleChange(e)} required/>
                                     <br/>
-                                    <input type="number" name="waist" value={(user.waist !== 0)?user.waist:""} onChange={e => handleChange(e)} required/>
+                                    <input type="number" name="chest" value={(user.chest[0] === 0)?"":user.chest[0]} onChange={e => handleChange(e)} required/>
                                     <br/>
-                                    <input type="number" name="hips" value={(user.hips !== 0)?user.hips:""} onChange={e => handleChange(e)} required/>
+                                    <input type="number" name="waist" value={(user.waist[0] === 0)?"":user.waist[0]} onChange={e => handleChange(e)} required/>
                                     <br/>
-                                    <input type="number" name="thighs" value={(user.thighs !== 0)?user.thighs:""} onChange={e => handleChange(e)} required/>
+                                    <input type="number" name="hips" value={(user.hips[0] === 0)?"":user.hips[0]} onChange={e => handleChange(e)} required/>
                                     <br/>
-                                    <input type="number" name="upperArm" value={(user.upperArm !== 0)?user.upperArm:""} onChange={e => handleChange(e)} required/>
+                                    <input type="number" name="thighs" value={(user.thighs[0] === 0)?"":user.thighs[0]} onChange={e => handleChange(e)} required/>
                                     <br/>
-                                    <input type="submit" value="Save"  className={`${styles.submitbtn} ${styles.btn}`}/>
+                                    <input type="number" name="upperarm" value={(user.upperarm[0] === 0)?"":user.upperarm[0]} onChange={e => handleChange(e)} required/>
+                                    <br/>
+                                    <br/>
+                                    <input type="submit" value="Save" style={{paddingTop:"-4pt",paddingBottom:"-4pt"}}  className={`${styles.submitbtn} ${styles.btn}`}/>
                                     <button value="back"  className={styles.btn} onClick={() => setPage(!page)}>Back</button>
                                     
                                 </div>
