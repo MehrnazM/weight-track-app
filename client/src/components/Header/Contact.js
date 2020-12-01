@@ -6,8 +6,8 @@ function Contact(){
     return(
         <div>
             
-            <p>
-                This is contact us, blah blah blah...
+            <p style={{fontSize:"25px", marginTop:"10%",marginLeft:"33%"}}>
+                You can contact me by email: <a href={"mailto:" + "mehrnaz.movahed@gmail.com"}>mehrnaz.movahed@gmail.com</a>
             </p>
         </div>
     )
