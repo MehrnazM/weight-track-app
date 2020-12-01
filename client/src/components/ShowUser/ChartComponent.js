@@ -5,9 +5,12 @@ import styles from "./ShowUser.module.css"
 function ChartComponent(props){
 
     const { xAxis, data, chartLabel, color, title } = props
+    const measur = (chartLabel === 'weight')?'kg':'cm'
     const length = xAxis.length
     var shownxAxis = xAxis
     var shownData = data
+    const minimum = Math.floor(Math.min(...data))
+    const maximum = Math.floor(Math.max(...data))
     if(length > 12){
         shownxAxis = xAxis.slice(length-12)
         shownData = data.slice(length-12)
@@ -40,6 +43,27 @@ function ChartComponent(props){
                     legend:{
                         display: true,
                         position: 'right'
+                    },
+                    scales:{
+                        yAxes:[{
+                            scaleLabel: {
+                                display: true,
+                                labelString: `${chartLabel}(${measur})`
+                              },
+                              ticks: {
+                                min: minimum-5,
+                                max: maximum+5,
+                                stepSize: 5,
+                                fixedStepSize: 1,
+                                beginAtZero : false
+                              }
+                        }],
+                        xAxes:[{
+                            scaleLabel: {
+                                display: true,
+                                labelString: `date`
+                              }
+                        }]
                     }
                 }}
             />

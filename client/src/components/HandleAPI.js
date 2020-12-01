@@ -6,10 +6,10 @@ const getUserById = async(id) => {
     .catch(e => {console.log(e)})
     return user
 }
-const getUserByUserPass = async(username,password) => {
-    let user = await fetch(`http://localhost:9000/users/${username}/${password}`)
+const getUserByUserPass = (username,password) => {
+     const user =  fetch(`http://localhost:9000/users/${username}/${password}`)
     .then(res => res.json())
-    .catch(e => {console.log(e)})
+    .catch(e => console.log(e))
     return user
 }
 
@@ -31,10 +31,12 @@ const postUser = async(user) => {
 }
 
 function updateUser(user){
+    console.log(user)
     fetch(`http://localhost:9000/users/${user.id}`,{
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
     })

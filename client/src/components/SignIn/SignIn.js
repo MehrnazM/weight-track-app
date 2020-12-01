@@ -1,5 +1,4 @@
 import { React, Component } from "react"
-//import userData from "../userData"
 import loginStyle from "../Login/Login.module.css"
 import styles from "./SignIn.module.css"
 import { withRouter } from "react-router-dom";
@@ -14,8 +13,8 @@ class SignIn extends Component{
         this.state = {
             username : "",
             password : "",
-            authorize : true,
-            data : {}
+            id : 0,
+            authorize : true
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -32,29 +31,34 @@ class SignIn extends Component{
         })
     }
     
-    async handleSubmit(e){
+     handleSubmit(e){
         e.preventDefault()
-       const user = await getUserByUserPass(this.state.username,this.state.password)
+       const user =  getUserByUserPass(this.state.username,this.state.password)
        .then(data => {
            console.log(data)
-            if(data !== null){
-                this.setState({authorize : true})
-                const id = data.id
-                const path = `/user/${id}/${this.state.username}/`
+            if(typeof(data) !== 'undefined'){
+                this.setState(prevState => {
+                    return{
+                        ...prevState,        
+                        authorize : true,
+                        id : data.id
+                    }
+                })
+                const path = `/user/${this.state.id}/${this.state.username}/`
+                console.log(path)
                 this.props.history.push(path)
                 this.props.history.go(0)
-                return
+
+            }
+            else{
+                this.setState({
+                    username : "",
+                    password : "",
+                    authorize : false
+                })
             }
         })
-        .catch(e => console.log(e))
-        
-        this.setState({
-            username : "",
-            password : "",
-            authorize : false
-        })
-        
-       
+        .catch(e => console.log(e))         
     }
 
     render(){

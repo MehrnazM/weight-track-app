@@ -12,14 +12,13 @@ class Edit extends React.Component{
         this.state = {
             username: this.props.match.params.username,
             id: this.props.match.params.id,
+            user : {},
             weight: 0,
-            height: 0,
             hips: 0,
             chest: 0,
             thighs: 0,
-            upperarms: 0,
-            waist: 0,
-            date: ""
+            upperarm: 0,
+            waist: 0
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleClick = this.handleClick.bind(this)
@@ -36,61 +35,79 @@ class Edit extends React.Component{
     handleClick(event){
 
         event.preventDefault()
+        console.log("I am in click")
+        console.log(this.state.user)
         const {value} = event.target
+        console.log(value)
         if(value === "Save"){
-            const user = getUserById(this.state.id)
+        
+            const editedUser = this.state.user
+            console.log(editedUser)
             const today = new Date().toDateString().slice(4)
+            const lastIndex = editedUser.date.length - 1
+            const lastDate = editedUser['date'][lastIndex]
+            const attributes = Object.getOwnPropertyNames(this.state).slice(3)
+            if(lastDate === today){
+                attributes.forEach(item => {
+                    if(this.state[item] !== 0){
+                        editedUser[item][lastIndex] = parseFloat(this.state[item])
+                    }
+                })
+            }
+            else{
+                editedUser.date.push(today)
+                attributes.forEach(item => {
+                    let lastVal
+                    if(this.state[item] === 0){
+                        lastVal = editedUser[item][lastIndex]
+                    }
+                    else{
+                        lastVal = parseFloat(this.state[item])
+                    }
+                    editedUser[item].push(lastVal)
+                })
+                
+            }
+            console.log(editedUser)
+            updateUser(editedUser)
+            this.props.history.push(`/user/${this.state.id}/${this.state.username}/`)
+            this.props.history.go(0)
+        }
+        
+    }
+    async componentDidMount(){
+        const newUser =  await getUserById(this.state.id)
+        .then(response => {
             this.setState(prevState => {
                 return{
-                    ...prevState,
-                    date : today
+                ...prevState,
+                user : response
                 }
             })
-            const attributes = Object.getOwnPropertyNames(this.state)
-            attributes.slice(2).forEach(item => {
-                if(this.state[item] === 0){
-                    const lastVal = user[item][user[item].length-1]
-                    this.setState(prevState => {
-                        return{
-                            ...prevState,
-                            [item] : lastVal
-                        }
-                    })
-                }
-                user[item].push(this.state[item])
-            })
-            updateUser(user)
-        }
-        this.props.history.push(`/user/${this.state.id}/${this.state.username}/`)
-        this.props.history.go(0)
+        })
     }
-
     render(){
         return(
             <div className={`col-md-3 ${loginStyles.box}`}>
                 
-                <form onSubmit={this.handleClick}>
+                <form>
                     <div className={styles.edit}>
                         <div className={styles.editGridLeft}>
-                            <label for="weight">Weight: </label>
+                            <label>Weight: </label>
                             <br/>
-                            <label for="height">Height: </label>
+                            <label>Waist: </label>
                             <br/>
-                            <label for="waist">Waist: </label>
+                            <label>Hips: </label>
                             <br/>
-                            <label for="hips">Hips: </label>
+                            <label>Chest: </label>
                             <br/>
-                            <label for="chest">Chest: </label>
+                            <label>Thighs: </label>
                             <br/>
-                            <label for="thighs">Thighs: </label>
-                            <br/>
-                            <label for="upperarms">Upper arms: </label>
+                            <label>Upper arms: </label>
                             <br/>
                         </div>
                         <div className={styles.editGridRight}>
                             <input type="number" name="weight" value={(this.state.weight !== 0)?this.state.weight:""} onChange={this.handleChange}/>
-                            <br/>
-                            <input type="number" name="height" value={(this.state.height !== 0)?this.state.height:""} onChange={this.handleChange}/>
                             <br/>
                             <input type="number" name="waist" value={(this.state.waist !== 0)?this.state.waist:""} onChange={this.handleChange}/>
                             <br/>
@@ -105,7 +122,7 @@ class Edit extends React.Component{
                         </div>
                         </div>
                     <div className={styles.editButton}>
-                        <input type="submit" value="Save"/><button value="Cancel" onClick={e => this.handleClick(e)}>Cancel</button>
+                        <input type="button" value="Save" onClick={e => this.handleClick(e)}/><button value="Cancel" onClick={e => this.handleClick(e)}>Cancel</button>
                     </div>
                 </form>
                

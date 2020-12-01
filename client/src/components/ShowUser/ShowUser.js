@@ -43,7 +43,6 @@ class ShowUser extends Component{
             })
         }})
         .catch(e => console.log(e))
-        console.log(this.state.user)
         const picUrl = await (this.state.user.gender === "female")? 
                         "https://freeiconshop.com/wp-content/uploads/edd/person-girl-flat.png":
                         "https://i.pinimgcom/originals/7c/c7/a6/7cc7a630624d20f7797cb4c8e93c09c1.png"
@@ -78,7 +77,7 @@ class ShowUser extends Component{
                                     onChange={this.handleChange}>
                                 <option value="">--Please choose an attribute to see the progress chart</option>
                                 <option value="weight">Weight</option>
-                                <option value="weight">Weight</option>
+                                <option value="waist">Waist</option>
                                 <option value="chest">Chest</option>
                                 <option value="upperarm">Upper arm</option>
                                 <option value="thighs">Thighs</option>

@@ -21,6 +21,7 @@ const getUserById = (req,res) => {
         if(error){
             throw error
         }
+        console.log(results.rows[0])
         res.status(200).json(results.rows[0])
     })
 }
@@ -28,14 +29,13 @@ const getUserByUsernamePass = (req,res) => {
     const { username,password } = req.params
     pool.query('SELECT * FROM users WHERE username=$1 AND password=$2', [username,password],(error,results) => {
         if(error){
-            console.log(error)
+            throw error
         }
-        res.status(200).json(results.rows)
+            res.status(200).json(results.rows[0])
+        
     })
 }
 const createUser = (req,res) => {
-    console.log("before command")
-    console.log(req.body)
     const { username,password,email,gender,birthDate,weight,height,waist,hips,chest,thighs,upperarm } = req.body
     const today = new Date().toDateString().slice(4)
     
@@ -46,7 +46,6 @@ const createUser = (req,res) => {
                     throw error
                 }
                 else{
-                    console.log(results.rows[0])
                     res.status(201).json(results.rows[0])
                 }
                 
@@ -55,10 +54,10 @@ const createUser = (req,res) => {
 
 const updateUser = (req,res) => {
     const id = parseInt(req.params.id)
-    const { weight,waist,hips,chest,thighs,upperarm } = req.body.user
-    const qCommand = 'UPDATE users SET weight = weight || ARRAY[$1],waist = waist || ARRAY[$2],hips = hips || ARRAY[$3],chest = chest || ARRAY[$4],thighs = thighs || ARRAY[$5],upperarm = upperarm || ARRAY[$6] WHERE id = $7'
+    const { weight,waist,hips,chest,thighs,upperarm,date } = req.body
+    const qCommand = 'UPDATE users SET weight = $1,waist = $2,hips = $3,chest = $4,thighs = $5,upperarm = $6, date = $7 WHERE id = $8'
     pool.query(
-        qCommand, [weight,waist,hips,chest,thighs,upperarm,id],
+        qCommand, [weight,waist,hips,chest,thighs,upperarm,date,id],
         (error,results) => {
             if(error){
                 throw error

@@ -3,7 +3,7 @@ import React, { Fragment } from "react"
 
 function PrintInformation(user){
     const index = user.date.length-1
-    console.log(user)
+    console.log(index)
         return(
             <Fragment >
                 Weight: {user.weight[index]} kg
@@ -20,7 +20,7 @@ function PrintInformation(user){
                 <br/>
                 Upper arm: {user.upperarm[index]} cm
                 <br/>
-                date: {user.date[index]} cm
+                date: {`${user.date[index].slice(0,5)},${user.date[index].slice(6)}`}
                 <br/>
             </Fragment>
         )
