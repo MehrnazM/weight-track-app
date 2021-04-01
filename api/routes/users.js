@@ -12,7 +12,7 @@ router.get('/',(req,res,next) => {
     info : 'Users'
   })
 })
-router.get('/:username/:password',db.getUserByUsernamePass)
+router.get('/user/:username',db.getUserByUsernamePass)
 router.get('/:id',db.getUserById)
 router.post('/',db.createUser)
 router.put('/:id',db.updateUser)

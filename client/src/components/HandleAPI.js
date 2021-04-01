@@ -2,12 +2,17 @@
 
 const getUserById = async(id) => {
     let user = await fetch(`http://localhost:9000/users/${id}`)
-    .then(res => res.json())
-    .catch(e => {console.log(e)})
-    return user
+    //.then(res => res.json())
+    //.catch(e => {console.log(e)})
+    
+    return user.json()
 }
 const getUserByUserPass = (username,password) => {
-     const user =  fetch(`http://localhost:9000/users/${username}/${password}`)
+     const user =  fetch(`http://localhost:9000/users/user/${username}`,{
+         headers: {
+             'authentication' : password
+         }
+     })
     .then(res => res.json())
     .catch(e => console.log(e))
     return user

@@ -26,8 +26,9 @@ const getUserById = (req,res) => {
     })
 }
 const getUserByUsernamePass = (req,res) => {
-    const { username,password } = req.params
-    pool.query('SELECT * FROM users WHERE username=$1 AND password=$2', [username,password],(error,results) => {
+    const { username } = req.params
+    const {authentication} = req.headers
+    pool.query('SELECT * FROM users WHERE username=$1 AND password=$2', [username,authentication],(error,results) => {
         if(error){
             throw error
         }

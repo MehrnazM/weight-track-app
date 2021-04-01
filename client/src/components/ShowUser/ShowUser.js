@@ -34,15 +34,23 @@ class ShowUser extends Component{
     async componentDidMount(){
         this._isMounted = true;
         const newUser = await getUserById(this.state.id)
-        .then(response => {if(this._isMounted){
+        if(this._isMounted){
             this.setState(prevState => {
                 return{
                 ...prevState,
-                user : response
+                user : newUser
                 }
             })
-        }})
-        .catch(e => console.log(e))
+        }
+        // .then(response => {if(this._isMounted){
+        //     this.setState(prevState => {
+        //         return{
+        //         ...prevState,
+        //         user : response
+        //         }
+        //     })
+        // }})
+        // .catch(e => console.log(e))
         const picUrl = await (this.state.user.gender === "female")? 
                         "https://freeiconshop.com/wp-content/uploads/edd/person-girl-flat.png":
                         "https://i.pinimgcom/originals/7c/c7/a6/7cc7a630624d20f7797cb4c8e93c09c1.png"

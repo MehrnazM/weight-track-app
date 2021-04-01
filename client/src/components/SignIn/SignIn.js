@@ -33,7 +33,7 @@ class SignIn extends Component{
     
      handleSubmit(e){
         e.preventDefault()
-       const user =  getUserByUserPass(this.state.username,this.state.password)
+       getUserByUserPass(this.state.username,this.state.password)
        .then(data => {
            console.log(data)
             if(typeof(data) !== 'undefined'){
